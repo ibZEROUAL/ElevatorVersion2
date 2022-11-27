@@ -23,20 +23,26 @@ public class ElevatorInterfaceImpl implements ElevatorInterface {
                 }
             }
         }else {
-            int ElevatorFloor = elevators.parallelStream()
-                    .filter(e->e.getState() == State.REST || e.getState() == State.UP)
-                    .map(Elevator::getCurrentFloor)
-                    .max(Comparator.naturalOrder())
-                    .get();
-
-            ElevatorId = elevators.stream()
-                    .filter(elevator -> elevator.getCurrentFloor() == ElevatorFloor)
-                    .findFirst()
-                    .get()
-                    .getId();
-
+            int ElevatorFloor = getElevatorFloor(elevators);
+            ElevatorId = getElevatorId(elevators, ElevatorFloor);
         }
         return  ElevatorId;
+    }
+
+    private static String getElevatorId(List<Elevator> elevators, int ElevatorFloor) {
+        return elevators.stream()
+                .filter(elevator -> elevator.getCurrentFloor() == ElevatorFloor)
+                .findFirst()
+                .get()
+                .getId();
+    }
+
+    private static Integer getElevatorFloor(List<Elevator> elevators) {
+        return elevators.parallelStream()
+                .filter(e -> e.getState() == State.REST || e.getState() == State.UP)
+                .map(Elevator::getCurrentFloor)
+                .max(Comparator.naturalOrder())
+                .get();
     }
 
     @Override

@@ -19,16 +19,14 @@ public class Building {
         this.numberOfFloors = numberOfFloors;
 
         Arrays.stream(elevatorsInfos).forEach(e->{
-            String idElevator = e.split(":")[0];
-            int currentFloor = Integer.parseInt(e.split(":")[1]);
-            elevators.add(ElevatorFactory.createElevator(idElevator,currentFloor));
+            elevators.add(ElevatorFactory.createElevator(e));
         });
     }
         public String requestElevator () {
             return requestElevator(10);
         }
-         public String requestElevator( int i){
-           return this.elevatorInterface.getClosestElevator(elevators,numberOfFloors,i);
+         public String requestElevator( int requestedFloor){
+           return this.elevatorInterface.getClosestElevator(elevators,numberOfFloors,requestedFloor);
          }
 
         public void move (String id, String state){
